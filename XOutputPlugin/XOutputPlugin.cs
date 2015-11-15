@@ -100,17 +100,27 @@ namespace XOutputPlugin
 
         public int GetAxis(XOutputAxis axis)
         {
-            return 0;
+            return device.GetAxis(axis);
         }
 
         public int GetTrigger(XOutputTrigger trigger)
         {
-            return 0;
+            return device.GetTrigger(trigger);
         }
 
         public bool GetButton(XOutputButton button)
         {
-            return false;
+            return device.GetButton(button);
+        }
+
+        public void SetReset(bool value)
+        {
+            device.ResetAxisOnExecute = value;
+        }
+
+        public bool GetReset()
+        {
+            return device.ResetAxisOnExecute;
         }
 
         public void Dispose()
@@ -263,6 +273,10 @@ namespace XOutputPlugin
         }
         #endregion
 
+        public bool ResetAxisOnExecute {
+            get { return holder.GetReset(); }
+            set { holder.SetReset(value); }
+        }
         public int AxisMax { get { return Int16.MaxValue; } }
         public int AxisMin { get { return Int16.MinValue; } }
         public int TriggerMax { get { return Byte.MaxValue; } }

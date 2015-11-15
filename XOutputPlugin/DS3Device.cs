@@ -40,20 +40,23 @@ namespace XOutputPlugin
     {
         public const String DS3_BUS_CLASS_GUID = "{F679F562-3164-42CE-A4DB-E7DDBE723909}";
         public uint Index { get; private set; }
+        public Boolean ResetAxisOnExecute { get; set; }
         private DeviceState m_state;
 
         public DS3Device(uint index) : base(DS3_BUS_CLASS_GUID)
         {
             Index = index;
+            ResetAxisOnExecute = true;
+            m_state = new DeviceState();
             ResetState();
         }
 
         private void ResetState()
         {
-            m_state = new DeviceState();
             m_state.ButtonState = new Boolean[Enum.GetNames(typeof(XOutputButton)).Length];
             m_state.TriggerState = new Byte[Enum.GetNames(typeof(XOutputTrigger)).Length];
-            m_state.AxisState = new Int16[Enum.GetNames(typeof(XOutputAxis)).Length];
+            if(ResetAxisOnExecute)
+                m_state.AxisState = new Int16[Enum.GetNames(typeof(XOutputAxis)).Length];
         }
 
         private Int32 Scale(Int32 Value, Boolean Flip)
@@ -143,6 +146,21 @@ namespace XOutputPlugin
         public void SetAxis(XOutputAxis axis, Int32 value)
         {
             m_state.AxisState[(int)axis] = Convert.ToInt16(InRange(value, Int16.MinValue, Int16.MaxValue));
+        }
+
+        public Boolean GetButton(XOutputButton button)
+        {
+            return m_state.ButtonState[(int)button];
+        }
+
+        public Byte GetTrigger(XOutputTrigger trigger)
+        {
+          return m_state.TriggerState[(int)trigger];
+        }
+
+        public Int16 GetAxis(XOutputAxis axis)
+        {
+            return m_state.AxisState[(int)axis] ;
         }
 
         public Int32 InRange(Int32 value, Int32 min, Int32 max)
