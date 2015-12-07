@@ -176,8 +176,8 @@ namespace XOutputPlugin
 
         public int L2
         {
-            get { return holder.GetAxis(XOutputAxis.RY); }
-            set { holder.SetAxis(XOutputAxis.RY, value); }
+            get { return holder.GetTrigger(XOutputTrigger.L2); }
+            set { holder.SetTrigger(XOutputTrigger.L2, value); }
         }
         #endregion
 
